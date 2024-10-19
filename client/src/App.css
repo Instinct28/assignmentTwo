@@ -15,17 +15,40 @@ h1, h2, h3 {
   justify-content: space-around;
 }
 
-.summaryContainer{
-  margin-top: 30px;
-}
-
-.summaryCard{
+.weather-card {
   width: 40vw;
-  margin: auto;
   background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
+  margin: 16px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.weather-card h3 {
+  margin: 0;
+}
+
+
+.summaryContainer{
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.summaryCard{
+  width: 40vw;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.alert{
+  color: red;
 }

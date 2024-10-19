@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const useWeatherData = () => {
     const [weatherData, setWeatherData] = useState([]);
-    const [dailySummary, setDailySummary] = useState({});
+    const [dailySummary, setDailySummary] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

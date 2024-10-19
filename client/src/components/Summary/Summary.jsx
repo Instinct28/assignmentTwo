@@ -3,12 +3,17 @@ import useWeatherData from '../Hook/WeatherData';
 import WeatherSummary from './SummaryCard';
 
 const Summary = () => {
+
   const { dailySummary, loading } = useWeatherData();
 
   return (
-    <div className='summaryContainer'>
+    <div>
       <h1>Daily Weather Summary</h1>
-      {loading ? <p>Loading...</p> : <WeatherSummary summary={dailySummary} />}
+      <div className='summaryContainer'>
+        { loading ? <p>Loading...</p> : dailySummary.map((element) => {
+          return <WeatherSummary key={element._id} summary={element} />
+        })}
+      </div>
     </div>
   );
 };

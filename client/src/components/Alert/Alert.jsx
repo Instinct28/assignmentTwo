@@ -1,12 +1,12 @@
 import React from 'react';
 
-const AlertNotification = ({ alert }) => {
+const Alert = ({ alert }) => {
   return (
     <div className="alert">
       <h3>Weather Alert</h3>
-      <p>{alert.message}</p>
+      <p>{alert.map(item => item.message)}</p>
     </div>
   );
 };
 
-export default AlertNotification;
+export default Alert;
