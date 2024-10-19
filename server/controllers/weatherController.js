@@ -5,7 +5,7 @@ const kelvinToCelsius = require('../utils/temperatureConverter');
 const weather = require('../models/weather');
 const WeatherSummary = require('../models/summary');
 
-const getWeatherData = async (req, res) => {
+const getWeatherData = async () => {
     try {
         const cities = ['Delhi', 'Mumbai', 'Chennai', 'Bangalore', 'Kolkata', 'Hyderabad'];
         const apiKey = process.env.API_KEY;
@@ -22,9 +22,9 @@ const getWeatherData = async (req, res) => {
             });
         }
         const data = await Weather.insertMany(weatherData);
-        res.status(200).json(data);
+        return data;
     } catch (error) {
-        res.status(500).json({ message: 'Failed to retrieve weather data' });
+        console.log('Failed to retrieve weather data');
     }
 };
 
