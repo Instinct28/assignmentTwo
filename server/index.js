@@ -11,6 +11,7 @@ const interval = process.env.WEATHER_UPDATE_INTERVAL || 300000;
 
 connectionToDB();
 
+app.use(express.json());
 app.use(cors());
 
 app.get('/api/weather', async (req, res) => {
@@ -23,7 +24,7 @@ setInterval(async () => {
     await getWeatherData();
 }, interval);
 
-app.get('/api/summary', getDailySummary);
+app.use('/api/summary', getDailySummary);
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);

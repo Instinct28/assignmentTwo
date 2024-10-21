@@ -11,9 +11,12 @@ const WeatherSummary = ({ summary }) => {
     });
   }
 
+  const formattedDate = new Date(summary.date).toLocaleDateString('en-GB');
+
   return (
     <div className="summaryCard">
       <h2>Daily Weather Summary</h2>
+      <p>Date: {formattedDate}</p>
       <p>City: {summary.city} </p>
       <p>Average Temp: {summary.avgTemp} °C</p>
       <p>Max Temp: {summary.maxTemp} °C</p>

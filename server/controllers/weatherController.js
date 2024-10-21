@@ -19,6 +19,8 @@ const getWeatherData = async () => {
                 main: response.data.weather[0].main,
                 feels_like: kelvinToCelsius(response.data.main.feels_like),
                 dt: new Date(response.data.dt * 1000),
+                humidity: response.data.main.humidity,
+                wind: response.data.wind.speed
             });
         }
         const data = await Weather.insertMany(weatherData);
@@ -31,12 +33,24 @@ const getWeatherData = async () => {
 const getDailySummary = async (req, res) => {
   try {
     // Get the current date (start of the day)
-    const startOfDay = new Date();
-    startOfDay.setUTCHours(0, 0, 0, 0);  // Set time to midnight
+    let startOfDay;
+    let endOfDay;
+    if(Object.keys(req.body).length === 0){
+      startOfDay = new Date();
+      startOfDay.setUTCHours(0, 0, 0, 0);  // Set time to midnight
 
-    // Set the end of the day (23:59:59)
-    const endOfDay = new Date();
-    endOfDay.setUTCHours(23, 59, 59, 999);
+      // Set the end of the day (23:59:59)
+      endOfDay = new Date();
+      endOfDay.setUTCHours(23, 59, 59, 999);
+    }else{
+      const date = req.body.date;
+      startOfDay = new Date(date);
+      startOfDay.setUTCHours(0, 0, 0, 0);  // Set time to midnight
+
+      // Set the end of the day (23:59:59)
+      endOfDay = new Date(date);
+      endOfDay.setUTCHours(23, 59, 59, 999);
+    }
 
     // Query the database to get today's weather data
     const summaries = await Weather.aggregate([

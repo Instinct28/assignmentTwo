@@ -24,7 +24,7 @@ const useWeatherData = () => {
         fetchData();
     }, []);
 
-    return { weatherData, dailySummary, loading };
+    return { weatherData, dailySummary, loading, setDailySummary };
 };
 
 export default useWeatherData;

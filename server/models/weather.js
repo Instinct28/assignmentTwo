@@ -6,6 +6,8 @@ const WeatherSchema = new mongoose.Schema({
   feels_like: Number,
   main: String,
   dt: { type: Date, default: Date.now },
+  humidity: Number,
+  wind: Number
 });
 
 module.exports = mongoose.model('Weather', WeatherSchema);
