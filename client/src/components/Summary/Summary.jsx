@@ -27,18 +27,23 @@ const Summary = () => {
   }
 
   return (
-    <div>
+    <div className='container'>
       <h1>Daily Weather Summary</h1>
-      <form onSubmit={handleSubmit}>
+      <div className='d-flex justify-content-between'>
+      <Link to="/"><button className='btn btn-primary'>Go to home</button></Link>
+      <form className='d-flex justify-content-around' onSubmit={handleSubmit}>
         <input type='date' onChange={(event) => handleChange(event)} />
-        <button className='button-div' type='submit'>Submit</button>
+        <button className='button-div btn btn-primary' type='submit'>Submit</button>
       </form>
-      <Link to="/"><button>Go to home</button></Link>
-      <div className='summaryContainer'>
-        { loading ? <p>Loading...</p> : dailySummary.map((element) => {
-          return <WeatherSummary key={element._id} summary={element} />
-        })}
       </div>
+      {
+        dailySummary.length !== 0 ? 
+        <div className='summaryContainer'>
+          { loading ? <p>Loading...</p> : dailySummary.map((element) => {
+            return <WeatherSummary key={element._id} summary={element} />
+          })}
+        </div> : <h3 className='block'>We can't predict Future</h3>
+      } 
     </div>
   );
 };

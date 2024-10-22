@@ -7,9 +7,11 @@ const Home = () => {
   const { weatherData, loading } = useWeatherData();
 
   return (
-    <div>
+    <div className='container'>
       <h1>Weather Monitoring</h1>
-      <Link to="/summary"><button>See detailed summary</button></Link>
+      <div className='float-end'>
+      <Link to="/summary"><button className='btn btn-primary'>See detailed summary</button></Link>
+      </div>
       <div className='WeatherContainer'>
         {loading ? (
             <p>Loading...</p>

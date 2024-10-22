@@ -2,7 +2,6 @@ const axios = require('axios');
 const Weather = require('../models/weather');
 require('dotenv').config();
 const kelvinToCelsius = require('../utils/temperatureConverter');
-const weather = require('../models/weather');
 const WeatherSummary = require('../models/summary');
 
 const getWeatherData = async () => {
