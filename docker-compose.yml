@@ -1,0 +1,24 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./server  # Adjust the path if necessary
+    ports:
+      - "8000:8000"  # Host:Container port mapping
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/yourdbname  # MongoDB connection string
+    depends_on:
+      - mongo
+
+  frontend:
+    build:
+      context: ./client  # Adjust the path if necessary
+    ports:
+      - "5173:5173"  # Host:Container port mapping
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"  # Expose MongoDB port
