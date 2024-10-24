@@ -29,10 +29,6 @@ const Summary = () => {
   return (
     <div>
       <h1>Daily Weather Summary</h1>
-      <form onSubmit={handleSubmit}>
-        <input type='date' onChange={(event) => handleChange(event)} />
-        <button className='button-div' type='submit'>Submit</button>
-      </form>
       <Link to="/"><button>Go to home</button></Link>
       <div className='summaryContainer'>
         { loading ? <p>Loading...</p> : dailySummary.map((element) => {

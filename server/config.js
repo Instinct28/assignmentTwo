@@ -4,7 +4,7 @@ require('dotenv').config();
 const url = process.env.MONGO_URI;
 
 const connectionToDB = () => {
-    mongoose.connect(url).then(() => {
+    mongoose.connect('mongodb://localhost:27017/weather_monitoring').then(() => {
         console.log("Database connected");
     }).catch(() => {
         console.log("Error in database connection");

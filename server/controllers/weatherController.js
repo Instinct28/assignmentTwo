@@ -1,56 +1,50 @@
 const axios = require('axios');
 const Weather = require('../models/weather');
-require('dotenv').config();
 const kelvinToCelsius = require('../utils/temperatureConverter');
-const weather = require('../models/weather');
 const WeatherSummary = require('../models/summary');
 
+// Function to fetch weather data for multiple cities
 const getWeatherData = async () => {
-    try {
-        const cities = ['Delhi', 'Mumbai', 'Chennai', 'Bangalore', 'Kolkata', 'Hyderabad'];
-        const apiKey = process.env.API_KEY;
-        let weatherData = [];
-        for (const city of cities) {
-            const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
-            const tempInCelsius = kelvinToCelsius(response.data.main.temp);
-            weatherData.push({
-                city,
-                temp: tempInCelsius,
-                main: response.data.weather[0].main,
-                feels_like: kelvinToCelsius(response.data.main.feels_like),
-                dt: new Date(response.data.dt * 1000),
-                humidity: response.data.main.humidity,
-                wind: response.data.wind.speed
-            });
-        }
-        const data = await Weather.insertMany(weatherData);
-        return data;
-    } catch (error) {
-        console.log('Failed to retrieve weather data');
+  try {
+    const cities = ['Delhi', 'Mumbai', 'Chennai', 'Bangalore', 'Kolkata', 'Hyderabad'];
+    let weatherData = [];
+
+    for (const city of cities) {
+      // Fetch weather data for each city
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=4a1808d9860e593dddb0c79b35019a52`);
+      const tempInCelsius = kelvinToCelsius(response.data.main.temp);
+
+      // Push formatted weather data to the array
+      weatherData.push({
+        city,
+        temp: tempInCelsius,
+        main: response.data.weather[0].main,
+        feels_like: kelvinToCelsius(response.data.main.feels_like),
+        dt: new Date(response.data.dt * 1000),
+        humidity: response.data.main.humidity,
+        wind: response.data.wind.speed
+      });
     }
+
+    // Save weather data to the database
+    const data = await Weather.create(weatherData);
+    return data;
+  } catch (error) {
+    console.error('Failed to retrieve weather data', error);
+    throw new Error('Error retrieving weather data');
+  }
 };
+
 
 const getDailySummary = async (req, res) => {
   try {
     // Get the current date (start of the day)
-    let startOfDay;
-    let endOfDay;
-    if(Object.keys(req.body).length === 0){
-      startOfDay = new Date();
-      startOfDay.setUTCHours(0, 0, 0, 0);  // Set time to midnight
+    const startOfDay = new Date();
+    startOfDay.setUTCHours(0, 0, 0, 0);  // Set time to midnight
 
-      // Set the end of the day (23:59:59)
-      endOfDay = new Date();
-      endOfDay.setUTCHours(23, 59, 59, 999);
-    }else{
-      const date = req.body.date;
-      startOfDay = new Date(date);
-      startOfDay.setUTCHours(0, 0, 0, 0);  // Set time to midnight
-
-      // Set the end of the day (23:59:59)
-      endOfDay = new Date(date);
-      endOfDay.setUTCHours(23, 59, 59, 999);
-    }
+    // Set the end of the day (23:59:59)
+    const endOfDay = new Date();
+    endOfDay.setUTCHours(23, 59, 59, 999);
 
     // Query the database to get today's weather data
     const summaries = await Weather.aggregate([
@@ -80,7 +74,7 @@ const getDailySummary = async (req, res) => {
       },
       {
         // Sort to ensure proper display order
-        $sort: { "_id.day": 1 }
+        $sort: { "_id.currentDate": 1 }
       }
     ]);
 
@@ -104,7 +98,7 @@ const getDailySummary = async (req, res) => {
 
       return {
         city: summary._id.city,
-        date: summary._id.currentDate,
+        date: new Date(summary._id.currentDate),  // Convert to Date object
         avgTemp: summary.avgTemp.toFixed(2),  
         maxTemp: summary.maxTemp.toFixed(2),
         minTemp: summary.minTemp.toFixed(2),
@@ -112,14 +106,13 @@ const getDailySummary = async (req, res) => {
       };
     });
 
-    let newSummary = [];
-
+    // Save each summary to the database after removing the old ones
     for (const dailySummary of dailySummaries) {
       // Check if a summary already exists for the city and the current date
       await WeatherSummary.deleteMany({ city: dailySummary.city, date: dailySummary.date });
 
       // Create a new summary and save it
-      const summary = await WeatherSummary.create({
+      const newSummary = new WeatherSummary({
         city: dailySummary.city,
         date: dailySummary.date,
         avgTemp: dailySummary.avgTemp,
@@ -128,18 +121,21 @@ const getDailySummary = async (req, res) => {
         dominantCondition: dailySummary.dominantCondition,
         weatherUpdates: []  // Optionally, populate this with detailed updates if needed
       });
-      newSummary.push(summary);
+
+      await newSummary.save();  // Save the new summary
     }
 
-    res.status(200).json( newSummary );
+    // Return the new summaries as a response
+    res.status(200).json(dailySummaries);
 
   } catch (error) {
-    console.error("Error in fetching daily summary", error);
-    res.status(500).json({ error: 'Failed to get daily weather summary' });
+    console.error("Error in fetching and saving daily summary", error);
+    res.status(500).json({ error: 'Failed to get and save daily weather summary' });
   }
 };
+  
 
 module.exports = {
-    getWeatherData,
-    getDailySummary
-}
+  getWeatherData,
+  getDailySummary
+};
