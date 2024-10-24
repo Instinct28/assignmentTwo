@@ -43,13 +43,17 @@ Clone the repository to your local machine:
 ```bash
 git clone https://github.com/Instinct28/assignmentTwo.git
 cd assignmentTwo
-
-Firstly start server
+```
+### Firstly start server : 
+```bash
 cd server
 npm i
 npm start
+```
 
-Secondly start client
+### Then start client : 
+```bash
 cd client
 npm i
 npm run dev
+```
