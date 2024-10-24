@@ -10,7 +10,7 @@ h1, h2, h3 {
 }
 
 .WeatherContainer{
-  margin-top: 50px;
+  margin-top: 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -27,16 +27,41 @@ h1, h2, h3 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.block{
-  margin-top: 20px;
+.weather-card h3 {
+  margin: 0;
+}
+
+button{
+  position: absolute;
+  margin-left: 1200px;
+  border-radius: 10px;
+  padding: 5px;
+  color: #ddd;
+  background-color: rgb(5, 48, 216);
+  cursor: pointer;
 }
 
 input{
+  position: absolute;
+  margin-left: 100px;
   border-radius: 10px;
 }
 
 form{
-  width: 250px;
+  max-width: 250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button-div{
+  position: absolute;
+  margin-left: 250px;
+  border-radius: 10px;
+  padding: 5px;
+  color: #ddd;
+  background-color: rgb(5, 48, 216);
+  cursor: pointer;
 }
 
 .summaryContainer{
