@@ -47,6 +47,15 @@ cd assignmentTwo
 ### Firstly start server : 
 ```bash
 cd server
+```
+### Create .env file inside server and paste your code : 
+```bash
+API_KEY = YOUR_API_KEY
+MONGO_URI = PASTE_MONGO_URI_HERE
+```
+
+### Then start server
+```bash
 npm i
 npm start
 ```
@@ -54,6 +63,11 @@ npm start
 ### Then start client : 
 ```bash
 cd client
-npm i
+npm install --force
 npm run dev
+```
+
+### Running with Docker
+```bash
+docker pull instinctyash/frontend:
 ```
