@@ -15,7 +15,7 @@ const Home = () => {
             <p>Loading...</p>
         ) : (
             weatherData.map((weather) => (
-            <WeatherCard key={weather._id} {...weather} />
+            <WeatherCard key={weather.city} {...weather} />
             ))
         )}
       </div>
