@@ -5,16 +5,16 @@ const WeatherSummary = ({ summary }) => {
 
   const alerts = [];
 
-  if (summary.maxTemp > 30) {
+  if (summary.maxTemp > 35) {
     alerts.push({
-      message: `Temperature exceeded 30°C in ${summary.city}. Current temp: ${summary.maxTemp.toFixed(2)}°C`,
+      message: `Temperature exceeded 35°C in ${summary.city}. Current temp: ${summary.maxTemp}°C`,
     });
   }
 
   const formattedDate = new Date(summary.date).toLocaleDateString('en-GB');
 
   return (
-    <div className="summaryCard">
+    <div className="summaryCard" >
       <h2>Daily Weather Summary</h2>
       <p>Date: {formattedDate}</p>
       <p>City: {summary.city} </p>

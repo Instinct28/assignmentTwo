@@ -10,4 +10,4 @@ const WeatherSchema = new mongoose.Schema({
   wind: Number
 });
 
-module.exports = mongoose.model('Weather', WeatherSchema);
+module.exports = mongoose.model('weathers', WeatherSchema);

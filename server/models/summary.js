@@ -10,6 +10,6 @@ const summarySchema = new mongoose.Schema({
     weatherUpdates: Array 
 });
 
-const WeatherSummary = mongoose.model('WeatherSummary', summarySchema);
+const WeatherSummary = mongoose.model('weathersummaries', summarySchema);
 
 module.exports = WeatherSummary;

@@ -5,26 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Summary = () => {
 
-  const { dailySummary, loading, setDailySummary } = useWeatherData();
-  const [date, setDate] = useState("");
-
-  const handleChange = async (event) => {
-    setDate(event.target.value);
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const result = await fetch('http://localhost:8000/api/summary', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({date})
-    });
-    const summary = await result.json();
-    setDailySummary(summary);
-  }
+  const { dailySummary, loading} = useWeatherData();
 
   return (
     <div>
@@ -32,7 +13,7 @@ const Summary = () => {
       <Link to="/"><button>Go to home</button></Link>
       <div className='summaryContainer'>
         { loading ? <p>Loading...</p> : dailySummary.map((element) => {
-          return <WeatherSummary key={element._id} summary={element} />
+          return <WeatherSummary key={element.city} summary={element} />
         })}
       </div>
     </div>

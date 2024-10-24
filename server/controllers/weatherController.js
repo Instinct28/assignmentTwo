@@ -2,16 +2,18 @@ const axios = require('axios');
 const Weather = require('../models/weather');
 const kelvinToCelsius = require('../utils/temperatureConverter');
 const WeatherSummary = require('../models/summary');
+require('dotenv').config();
 
 // Function to fetch weather data for multiple cities
 const getWeatherData = async () => {
   try {
     const cities = ['Delhi', 'Mumbai', 'Chennai', 'Bangalore', 'Kolkata', 'Hyderabad'];
+    const apiKey = process.env.API_KEY;
     let weatherData = [];
 
     for (const city of cities) {
       // Fetch weather data for each city
-      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=4a1808d9860e593dddb0c79b35019a52`);
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
       const tempInCelsius = kelvinToCelsius(response.data.main.temp);
 
       // Push formatted weather data to the array
@@ -30,7 +32,7 @@ const getWeatherData = async () => {
     const data = await Weather.create(weatherData);
     return data;
   } catch (error) {
-    console.error('Failed to retrieve weather data', error);
+    console.log('Failed to retrieve weather data', error);
     throw new Error('Error retrieving weather data');
   }
 };
@@ -52,8 +54,8 @@ const getDailySummary = async (req, res) => {
         // Match records that belong to today
         $match: {
           dt: {
-            $gte: startOfDay,
-            $lte: endOfDay
+            $gte: new Date(startOfDay),
+            $lte: new Date (endOfDay)
           }
         }
       },
@@ -74,12 +76,16 @@ const getDailySummary = async (req, res) => {
       },
       {
         // Sort to ensure proper display order
-        $sort: { "_id.currentDate": 1 }
+        $sort: { "_id.city": 1 }
       }
     ]);
 
     // Determine the dominant weather condition for each city
     const dailySummaries = summaries.map(summary => {
+
+        if(summary._id.city === null){
+            return "";
+        }
       const weatherCounts = {};
 
       // Count occurrences of each weather condition

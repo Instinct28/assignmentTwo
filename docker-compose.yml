@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"  # Host:Container port mapping
     environment:
-      - MONGO_URI="mongodb://localhost:27017/weather_monitoring"  # MongoDB connection string
+      - MONGO_URI=mongodb://mongo:27017/weather_monitoring  # MongoDB connection string
     depends_on:
       - mongo
 

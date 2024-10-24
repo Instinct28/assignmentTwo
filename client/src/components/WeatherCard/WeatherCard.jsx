@@ -5,9 +5,9 @@ const WeatherCard = ({ city, temp, main, dt, feels_like, humidity, wind }) => {
 
   const alerts = [];
 
-  if (temp > 30) {
+  if (temp > 35) {
     alerts.push({
-      message: `Temperature exceeded 30°C in ${city}. Current temp: ${temp.toFixed(2)}°C`,
+      message: `Temperature exceeded 35°C in ${city}. Current temp: ${temp.toFixed(2)}°C`,
     });
   }
 
